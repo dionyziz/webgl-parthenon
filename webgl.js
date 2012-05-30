@@ -5,7 +5,6 @@ function init( canvas, fragmentShaderSrc, vertexShaderSrc ) {
         alert( 'Could not initialize WebGL' );
     }
     gl.shaderProgram = initShaders( gl, fragmentShaderSrc, vertexShaderSrc );
-    initBuffers( gl );
     gl.clearColor( 0.0, 0.0, 0.0, 1.0 );
     gl.enable( gl.DEPTH_TEST );
     return gl;

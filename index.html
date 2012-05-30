@@ -2,152 +2,20 @@
 <html>
     <head>
         <title>Utah Teapot</title>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <canvas id='canvas' width='600' height='600'></canvas>
+        <script src='http://code.jquery.com/jquery-1.7.2.min.js'></script>
         <script src="glMatrix-0.9.5.min.js"></script>
         <script src='network.js'></script>
         <script src='webgl.js'></script>
-        <script>
-            var W = 600, H = 600;
-            var canvas;
-
-            wget( 'fragment.c', function ( src ) {
-                var fragmentShaderSrc = src;
-                wget( 'vertex.c', function ( src ) {
-                    var vertexShaderSrc = src;
-                    var gl = init( document.getElementById( 'canvas' ), fragmentShaderSrc, vertexShaderSrc );
-                    render( gl );
-                } );
-            } );
-
-            var mvMatrix = mat4.create();
-            var pMatrix = mat4.create();
-
-            var vertexPositionBuffer;
-            var vertexIndexBuffer;
-            function initBuffers( gl ) {
-                vertexPositionBuffer = gl.createBuffer();
-                vertexIndexBuffer = gl.createBuffer();
-                vertexNormalBuffer = gl.createBuffer();
-                gl.bindBuffer( gl.ARRAY_BUFFER, vertexPositionBuffer );
-                var vertices = [
-                    // Front face
-                    -1.0, -1.0,  1.0,
-                    1.0, -1.0,  1.0,
-                    1.0,  1.0,  1.0,
-                    -1.0,  1.0,  1.0,
-
-                    // Back face
-                    -1.0, -1.0, -1.0,
-                    -1.0,  1.0, -1.0,
-                    1.0,  1.0, -1.0,
-                    1.0, -1.0, -1.0,
-
-                    // Top face
-                    -1.0,  1.0, -1.0,
-                    -1.0,  1.0,  1.0,
-                    1.0,  1.0,  1.0,
-                    1.0,  1.0, -1.0,
-
-                    // Bottom face
-                    -1.0, -1.0, -1.0,
-                    1.0, -1.0, -1.0,
-                    1.0, -1.0,  1.0,
-                    -1.0, -1.0,  1.0,
-
-                    // Right face
-                    1.0, -1.0, -1.0,
-                    1.0,  1.0, -1.0,
-                    1.0,  1.0,  1.0,
-                    1.0, -1.0,  1.0,
-
-                    // Left face
-                    -1.0, -1.0, -1.0,
-                    -1.0, -1.0,  1.0,
-                    -1.0,  1.0,  1.0,
-                    -1.0,  1.0, -1.0
-                ];
-                gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
-                vertexPositionBuffer.itemSize = 3;
-                vertexPositionBuffer.numItems = 24;
-                gl.bindBuffer( gl.ARRAY_BUFFER, vertexNormalBuffer );
-                vertexNormalBuffer.itemSize = 3;
-                vertexNormalBuffer.numItems = vertexPositionBuffer.numItems;
-                var cubeVertexIndices = [
-                    0, 1, 2,      0, 2, 3,    // Front face
-                    4, 5, 6,      4, 6, 7,    // Back face
-                    8, 9, 10,     8, 10, 11,  // Top face
-                    12, 13, 14,   12, 14, 15, // Bottom face
-                    16, 17, 18,   16, 18, 19, // Right face
-                    20, 21, 22,   20, 22, 23  // Left face
-                ];
-                vertexIndexBuffer.itemSize = 1;
-                vertexIndexBuffer.numItems = 36;
-                var normals = [];
-                for ( var i = 0; i < vertexPositionBuffer.numItems * 3; ++i ) {
-                    normals[ i ] = 0;
-                }
-                for ( var i = 0; i < vertexIndexBuffer.numItems / 3; ++i ) {
-                    var a = cubeVertexIndices[ 3 * i ];
-                    var b = cubeVertexIndices[ 3 * i + 1 ];
-                    var c = cubeVertexIndices[ 3 * i + 2 ];
-
-                    function getCoordinates( index ) {
-                        var x = vertices[ 3 * index + 0 ];
-                        var y = vertices[ 3 * index + 1 ];
-                        var z = vertices[ 3 * index + 2 ];
-                        var v = vec3.create( [ x, y, z ] );
-                        return v;
-                    }
-
-                    var pa = getCoordinates( a );
-                    var pb = getCoordinates( b );
-                    var pc = getCoordinates( c );
-                    var cross = vec3.create();
-
-                    vec3.subtract( pb, pa );
-                    vec3.subtract( pc, pa );
-                    vec3.cross( pb, pc, cross );
-                    vec3.normalize( cross );
-
-                    var points = [ a, b, c ];
-                    for ( var j = 0; j < 3; ++j ) {
-                        normals[ 3 * points[ j ] + 0 ] = cross[ 0 ];
-                        normals[ 3 * points[ j ] + 1 ] = cross[ 1 ];
-                        normals[ 3 * points[ j ] + 2 ] = cross[ 2 ];
-                    }
-                }
-                gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( normals ), gl.STATIC_DRAW );
-                gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, vertexIndexBuffer );
-                gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint16Array( cubeVertexIndices ), gl.STATIC_DRAW );
-            }
-            var t = 0;
-            mat4.perspective( 45, W / H, 0.1, 100.0, pMatrix );
-            function render( gl ) {
-                gl.viewport( 0, 0, W, H );
-                gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
-
-                mat4.identity( mvMatrix );
-                mat4.translate( mvMatrix, [ 0.0, 0.0, -7.0 ] );
-
-                t += 0.01;
-                mat4.rotate( mvMatrix, t, [ 0, 1, 1 ] );
-
-                gl.bindBuffer( gl.ARRAY_BUFFER, vertexPositionBuffer );
-                gl.vertexAttribPointer( gl.shaderProgram.vertexPositionAttribute, vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0 );
-
-                gl.bindBuffer( gl.ARRAY_BUFFER, vertexNormalBuffer );
-                gl.vertexAttribPointer( gl.shaderProgram.vertexNormalAttribute, vertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0 );
-
-                gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, vertexIndexBuffer );
-                gl.uniformMatrix4fv( gl.shaderProgram.pMatrixUniform, false, pMatrix );
-                gl.uniformMatrix4fv( gl.shaderProgram.mvMatrixUniform, false, mvMatrix );
-                gl.drawElements( gl.TRIANGLES, vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0 );
-                setTimeout( function () {
-                    render( gl );
-                }, 30 );
-            }
-        </script>
+        <script src='normal.js'></script>
+        <script src='cube.js'></script>
+        <script src='cylinder.js'></script>
+        <script src='ui.js'></script>
+        <script src='item.js'></script>
+        <script src='renderer.js'></script>
+        <script src='loader.js'></script>
     </body>
 </html>
