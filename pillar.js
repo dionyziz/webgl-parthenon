@@ -16,12 +16,12 @@ function pillar( n, h, br, cr, s ) {
     r_up = br;
 	r_down = br;
 	for ( i = 0; i < s/2; i += 1 ) {
-		r_up = r_down;
-		r_down += r_step;
+        r_up = r_down;
+        r_down += r_step;
 		
-		for ( theta = 0; theta < 2 * Math.PI; theta += 2 * Math.PI / n ) {
-			var a = [ r_up * Math.cos( theta ), h / 2, r_up * Math.sin( theta ) ];
-			var b = [ r_down * Math.cos( theta ), 0, r_down * Math.sin( theta ) ];
+        for ( theta = 0; theta < 2 * Math.PI; theta += 2 * Math.PI / n ) {
+            var a = [ r_up * Math.cos( theta ), h / 2, r_up * Math.sin( theta ) ];
+            var b = [ r_down * Math.cos( theta ), 0, r_down * Math.sin( theta ) ];
 			var c = [ r_down * Math.cos( theta + step ), 0, r_down * Math.sin( theta + step ) ];
 			var d = [ r_up * Math.cos( theta + step ), h / 2, r_up * Math.sin( theta + step ) ];
 			vertices.push.apply( vertices, a );
@@ -38,9 +38,9 @@ function pillar( n, h, br, cr, s ) {
 			normals.push.apply( normals, n2 );
 			indices.push( index, index + 3, index + 1, index + 2, index + 1, index + 3 );
 			index += 4;
-		}
-	}
-console.log(vertices);
+        }
+    }
+
 	r_up = cr;
 	r_down = cr;
 	for ( i = s/2; i <= s; i += 1 ) {
