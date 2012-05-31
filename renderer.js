@@ -6,11 +6,14 @@ var Renderer = {
     createWorld: function( gl ) {
         var COLUMNS_FRONT = 8;
 
-        for ( var i = 0; i < COLUMNS_FRONT; ++i ) {
-            var col = new Item( gl, pillar( 10, 10.43, 1, 2, 4 ) );
+        /*for ( var i = 0; i < COLUMNS_FRONT; ++i ) {
+            var col = new Item( gl, pillar( 10, 10.43, 1, 2, 12 ) );
             col.move( 4 * i, 0, 0 );
             this.world.push( col );
-        }
+        }*/
+        var data = loadTeapotData();
+        var tea = new Item( gl, handleLoadedTeapot( data ) );
+        this.world.push( tea );
     },
     init: function( gl ) {
         this.pMatrix = mat4.create();
