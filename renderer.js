@@ -7,7 +7,7 @@ var Renderer = {
         var COLUMNS_FRONT = 8;
 
         for ( var i = 0; i < COLUMNS_FRONT; ++i ) {
-            var col = new Item( gl, cylinder( 10, 10.43, 1 ) );
+            var col = new Item( gl, pillar( 10, 10.43, 1, 2, 4 ) );
             col.move( 4 * i, 0, 0 );
             this.world.push( col );
         }
