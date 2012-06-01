@@ -1,15 +1,36 @@
+/*
+ * Developer: Dionysis "dionyziz" Zindros <dionyziz@gmail.com>
+ */
+
 var Renderer = {
     fps: 0,
     pMatrix: null,
     vMatrix: null,
     world: [],
     createWorld: function( gl ) {
-        var COLUMNS_FRONT = 8;
+        var COLUMNS_FRONT = 8, COLUMNS_SIDE = 15,
+            COLUMN_RADIUS = 1, COLUMN_SPACING = 2,
+            COLUMN_HEIGHT = 10.45, COLUMN_SUBDIVISION = 10;
+        var columnDistance = COLUMN_SPACING + 2 * COLUMN_RADIUS;
+        var templeWidth = COLUMNS_FRONT * columnDistance;
+        var templeDepth = COLUMNS_SIDE * columnDistance;
+        var geometry = cylinder( COLUMN_SUBDIVISION, COLUMN_HEIGHT, COLUMN_RADIUS );
 
-        for ( var i = 0; i < COLUMNS_FRONT; ++i ) {
-            var col = new Item( gl, cylinder( 10, 10.43, 1 ) );
-            col.move( 4 * i, 0, 0 );
+        for ( var x = -templeWidth / 2; x <= templeWidth / 2; x += columnDistance ) {
+            var col = new Item( gl, geometry );
+            var col2 = new Item( gl, geometry );
+            col.move( x, 0, -templeDepth / 2 );
+            col2.move( x, 0, templeDepth / 2 );
             this.world.push( col );
+            this.world.push( col2 );
+        }
+        for ( var z = -templeDepth / 2 + columnDistance; z < templeDepth / 2; z += columnDistance ) {
+            var col = new Item( gl, geometry );
+            var col2 = new Item( gl, geometry );
+            col.move( -templeWidth / 2, 0, z );
+            col2.move( templeWidth / 2, 0, z );
+            this.world.push( col );
+            this.world.push( col2 );
         }
     },
     init: function( gl ) {
