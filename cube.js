@@ -1,40 +1,47 @@
-function cube() {
+/*
+ * w width, h height, d depth
+ *
+ * Create a parallelepiped geometry centered around the origin
+ */
+
+function cube( w, h, d ) {
+    var x = w / 2, y = h / 2, z = d / 2;
     var vertices = [
         // Front face
-        -1.0, -1.0,  1.0,
-        1.0, -1.0,  1.0,
-        1.0,  1.0,  1.0,
-        -1.0,  1.0,  1.0,
+        -x, -y, z,
+        x,  -y, z,
+        x,   y, z,
+        -x,  y, z,
 
         // Back face
-        -1.0, -1.0, -1.0,
-        -1.0,  1.0, -1.0,
-        1.0,  1.0, -1.0,
-        1.0, -1.0, -1.0,
+        -x, -y, -z,
+        -x,  y, -z,
+        x,   y, -z,
+        x,  -y, -z,
 
         // Top face
-        -1.0,  1.0, -1.0,
-        -1.0,  1.0,  1.0,
-        1.0,  1.0,  1.0,
-        1.0,  1.0, -1.0,
+        -x, y, -z,
+        -x, y,  z,
+        x,  y,  z,
+        x,  y, -z,
 
         // Bottom face
-        -1.0, -1.0, -1.0,
-        1.0, -1.0, -1.0,
-        1.0, -1.0,  1.0,
-        -1.0, -1.0,  1.0,
+        -x, -y, -z,
+        x,  -y, -z,
+        x,  -y,  z,
+        -x, -y,  z,
 
         // Right face
-        1.0, -1.0, -1.0,
-        1.0,  1.0, -1.0,
-        1.0,  1.0,  1.0,
-        1.0, -1.0,  1.0,
+        x, -y, -z,
+        x,  y, -z,
+        x,  y,  z,
+        x, -y,  z,
 
         // Left face
-        -1.0, -1.0, -1.0,
-        -1.0, -1.0,  1.0,
-        -1.0,  1.0,  1.0,
-        -1.0,  1.0, -1.0
+        -x, -y, -z,
+        -x, -y,  z,
+        -x,  y,  z,
+        -x,  y, -z
     ];
     var indices = [
         0, 1, 2,      0, 2, 3,    // Front face

@@ -15,16 +15,16 @@ var xyz = [ 0, 0, 0 ];
 document.onkeydown = function( e ) {
     switch ( e.keyCode ) {
         case 37: // left
-            xyz[ 0 ] = -1;
-            break;
-        case 39: // right
             xyz[ 0 ] = 1;
             break;
+        case 39: // right
+            xyz[ 0 ] = -1;
+            break;
         case 40: // down
-            xyz[ 2 ] = 1;
+            xyz[ 2 ] = -1;
             break;
         case 38: // up
-            xyz[ 2 ] = -1;
+            xyz[ 2 ] = 1;
             break;
     }
 };
