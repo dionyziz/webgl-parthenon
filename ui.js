@@ -6,6 +6,9 @@ function onresize() {
     H = $( window ).height();
     canvas.width = W;
     canvas.height = H;
+    if ( Renderer.ready ) {
+        Renderer.resize( W, H );
+    }
 } 
 $( window ).resize( onresize );
 onresize();

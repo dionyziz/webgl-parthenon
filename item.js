@@ -1,13 +1,11 @@
-function Item( gl, geometry ) {
+function bufferSet( gl, geometry ) {
     this.vertices = geometry.vertices;
     this.indices = geometry.indices;
     this.normals = geometry.normals;
-    this.mMatrix = mat4.create();
+
     this.positionBuffer = gl.createBuffer();
     this.indexBuffer = gl.createBuffer();
     this.normalBuffer = gl.createBuffer();
-
-    mat4.identity( this.mMatrix );
 
     gl.bindBuffer( gl.ARRAY_BUFFER, this.positionBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( this.vertices ), gl.STATIC_DRAW );
@@ -21,6 +19,18 @@ function Item( gl, geometry ) {
     gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( this.normals ), gl.STATIC_DRAW );
     gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer );
     gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint16Array( this.indices ), gl.STATIC_DRAW );
+}
+
+function Item( gl, geometry ) {
+    this.mMatrix = mat4.create();
+    if ( !( geometry instanceof bufferSet ) ) {
+        this.bufferSet = new bufferSet( gl, geometry );
+    }
+    else {
+        this.bufferSet = geometry;
+    }
+
+    mat4.identity( this.mMatrix );
 }
 
 Item.prototype = {
