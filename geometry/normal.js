@@ -1,3 +1,8 @@
+/*
+ * Developers: Dionysis "dionyziz" Zindros <dionyziz@gmail.com>
+ *             Panayiotis Danassis <panos_dan@hotmail.com>
+ */
+
 function computeNormals( vertices, indices ) {
     var normals = [];
     for ( var i = 0; i < vertices.length; ++i ) {

@@ -1,3 +1,7 @@
+/*
+ * Developer: Dionysis "dionyziz" Zindros <dionyziz@gmail.com>
+ */
+
 function wget( url, callback ) {
     var xmlHTTP = new XMLHttpRequest();
     xmlHTTP.open( "GET", url, true );

@@ -1,3 +1,7 @@
+/*
+ * Developer: Dionysis "dionyziz" Zindros <dionyziz@gmail.com>
+ */
+
 var Parthenon = {
     COLUMNS_FRONT: 8,
     COLUMNS_SIDE: 15,

@@ -1,4 +1,8 @@
 /*
+ * Developer: Dionysis "dionyziz" Zindros <dionyziz@gmail.com>
+ */
+
+/*
  * w width, h height, d depth
  *
  * Create a parallelepiped geometry centered around the origin

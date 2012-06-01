@@ -1,3 +1,7 @@
+/*
+ * Developer: Dionysis "dionyziz" Zindros <dionyziz@gmail.com>
+ */
+
 wget( 'shaders/fragment.c', function ( src ) {
     var fragmentShaderSrc = src;
     wget( 'shaders/vertex.c', function ( src ) {

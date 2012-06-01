@@ -1,3 +1,8 @@
+/*
+ * Developers: Dionysis "dionyziz" Zindros <dionyziz@gmail.com>
+ *             Panayiotis Danassis <panos_dan@hotmail.com>
+ */
+
 function cylinder( n, h, r ) {
     var theta, vertices = [], indices = [], normals = [];
     var step = 2 * Math.PI / n;

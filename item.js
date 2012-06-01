@@ -1,3 +1,7 @@
+/*
+ * Developer: Dionysis "dionyziz" Zindros <dionyziz@gmail.com>
+ */
+
 function bufferSet( gl, geometry ) {
     this.vertices = geometry.vertices;
     this.indices = geometry.indices;
