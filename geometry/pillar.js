@@ -1,28 +1,38 @@
 /*	n = number of vertical slices
-	h = height of the pillar
-	br = base radius
-	cr = center radius
-	s = number of horizontal slices
+    h = height of the pillar
+    tr = top radius
+    br = base radius
+    cr = center radius
+    s = number of horizontal slices
 */
 
-function pillar( n, h, br, cr, s ) {
+function pillar( n, h, tr, br, cr, s ) {
     var vertices = [], indices = [], normals = [];
     var step = 2 * Math.PI / n;
     var index = 0;
-    var rStep = ( cr - br ) / ( s / 2 );
-    var rUp = br, rDown = br;
+    var rUp = tr, rDown = tr;
     var heightUp = h / 2;
     var heightDown = heightUp;
 
     function f( i ) {
-        return br + ( cr - br ) * Math.sin( Math.PI * i / s );
+        if ( i / s > 0.5 ) {
+            return br + ( cr - br ) * Math.sin( Math.PI * i / s );
+        }
+        return tr + ( cr - tr ) * Math.sin( Math.PI * i / s );
     }
-    function findNormal( p, i, theta ) {
+    function findNormal( i, theta ) {
         var x = 1;
         var z = 0;
         var y = 0;
         // derivative of f
-        var slope = Math.PI * ( i / s ) * ( cr - br ) * Math.cos( Math.PI * i / s );
+        var slope;
+
+        if ( i / s > 0.5 ) {
+            slope = Math.PI * ( i / s ) * ( cr - br ) * Math.cos( Math.PI * i / s );
+        }
+        else {
+            slope = Math.PI * ( i / s ) * ( cr - tr ) * Math.cos( Math.PI * i / s );
+        }
         var normal;
 
         x = 1;
@@ -54,10 +64,10 @@ function pillar( n, h, br, cr, s ) {
             vertices.push.apply( vertices, b );
             vertices.push.apply( vertices, c );
             vertices.push.apply( vertices, d );
-            var n1 = findNormal( a, i, theta ),
-                n2 = findNormal( b, i + 1, theta ),
-                n3 = findNormal( c, i + 1, theta + step ),
-                n4 = findNormal( d, i, theta + step );
+            var n1 = findNormal( i, theta ),
+                n2 = findNormal( i + 1, theta ),
+                n3 = findNormal( i + 1, theta + step ),
+                n4 = findNormal( i, theta + step );
             normals.push.apply( normals, n1 );
             normals.push.apply( normals, n2 );
             normals.push.apply( normals, n3 );

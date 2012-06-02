@@ -6,20 +6,34 @@ var Parthenon = {
     COLUMNS_FRONT: 8,
     COLUMNS_SIDE: 15,
     COLUMN_RADIUS: 1,
-    COLUMN_BASE_RADIUS: 0.7,
+    COLUMN_TOP_RADIUS: 0.8,
+    COLUMN_BASE_RADIUS: 1,
     COLUMN_SPACING: 3,
     COLUMN_HEIGHT: 10.45,
     COLUMN_SUBDIVISION: 10,
     STEP_WIDTH: 1,
     STEP_HEIGHT: 0.4,
     ROOF_HEIGHT: 3,
+    OUTER_CORRIDOR_SIZE: 4,
     columnDistance: 0,
     templeWidth: 0,
     templeDepth: 0,
+    templeInnerWidth: 0,
+    templeInnerDepth: 0,
     gl: null,
     world: null,
     createOuterColumns: function() {
-        colBuffer = new bufferSet( this.gl, pillar( this.COLUMN_SUBDIVISION, this.COLUMN_HEIGHT, this.COLUMN_BASE_RADIUS, this.COLUMN_RADIUS, this.COLUMN_SUBDIVISION ) );
+        colBuffer = new bufferSet(
+            this.gl,
+            pillar(
+                this.COLUMN_SUBDIVISION,
+                this.COLUMN_HEIGHT,
+                this.COLUMN_TOP_RADIUS,
+                this.COLUMN_BASE_RADIUS,
+                this.COLUMN_RADIUS,
+                this.COLUMN_SUBDIVISION
+            )
+        );
 
         for ( var x = -this.templeWidth / 2; x <= this.templeWidth / 2; x += this.columnDistance ) {
             var col = new Item( this.gl, colBuffer );
@@ -39,7 +53,7 @@ var Parthenon = {
             this.world.push( col2 );
         }
     },
-    createFloor: function() {
+    createOuterFloor: function() {
         for ( var step = 0; step < 3; ++step ) {
             var w = this.templeWidth + 2 * this.COLUMN_RADIUS + 2 * ( step + 1 ) * this.STEP_WIDTH,
                 h = this.STEP_HEIGHT,
@@ -47,6 +61,17 @@ var Parthenon = {
             
             var floor = new Item( this.gl, cube( w, h, d ) );
             floor.move( 0, -step * this.STEP_HEIGHT, 0 );
+            this.world.push( floor );
+        }
+    },
+    createInnerFloor: function() {
+        for ( var step = 0; step < 2; ++step ) {
+            var w = this.templeInnerWidth + 2 * this.COLUMN_RADIUS - 2 * ( step + 1 ) * this.STEP_WIDTH,
+                h = this.STEP_HEIGHT,
+                d = this.templeInnerDepth + 2 * this.COLUMN_RADIUS - 2 * ( step + 1 ) * this.STEP_WIDTH;
+            
+            var floor = new Item( this.gl, cube( w, h, d ) );
+            floor.move( 0, ( step + 1 ) * this.STEP_HEIGHT, 0 );
             this.world.push( floor );
         }
     },
@@ -69,8 +94,11 @@ var Parthenon = {
         this.columnDistance = this.COLUMN_SPACING + 2 * this.COLUMN_RADIUS;
         this.templeWidth = ( this.COLUMNS_FRONT - 1 ) * this.columnDistance;
         this.templeDepth = ( this.COLUMNS_SIDE - 1 ) * this.columnDistance;
+        this.templeInnerWidth = this.templeWidth - 2 * this.COLUMN_RADIUS - 2 * this.OUTER_CORRIDOR_SIZE;
+        this.templeInnerDepth = this.templeDepth - 2 * this.COLUMN_RADIUS - 2 * this.OUTER_CORRIDOR_SIZE;
         this.createOuterColumns();
-        this.createFloor();
+        this.createOuterFloor();
+        this.createInnerFloor();
         this.createRoof();
     }
 };
