@@ -6,6 +6,7 @@ var Parthenon = {
     COLUMNS_FRONT: 8,
     COLUMNS_SIDE: 15,
     COLUMN_RADIUS: 1,
+    COLUMN_BASE_RADIUS: 0.1,
     COLUMN_SPACING: 3,
     COLUMN_HEIGHT: 10.45,
     COLUMN_SUBDIVISION: 10,
@@ -18,7 +19,7 @@ var Parthenon = {
     gl: null,
     world: null,
     createOuterColumns: function() {
-        colBuffer = new bufferSet( this.gl, cylinder( this.COLUMN_SUBDIVISION, this.COLUMN_HEIGHT, this.COLUMN_RADIUS ) );
+        colBuffer = new bufferSet( this.gl, pillar( this.COLUMN_SUBDIVISION, this.COLUMN_HEIGHT, this.COLUMN_BASE_RADIUS, this.COLUMN_RADIUS, this.COLUMN_SUBDIVISION ) );
 
         for ( var x = -this.templeWidth / 2; x <= this.templeWidth / 2; x += this.columnDistance ) {
             var col = new Item( this.gl, colBuffer );
@@ -69,7 +70,7 @@ var Parthenon = {
         this.templeWidth = ( this.COLUMNS_FRONT - 1 ) * this.columnDistance;
         this.templeDepth = ( this.COLUMNS_SIDE - 1 ) * this.columnDistance;
         this.createOuterColumns();
-        this.createFloor();
-        this.createRoof();
+        // this.createFloor();
+        // this.createRoof();
     }
 };
