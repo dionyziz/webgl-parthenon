@@ -20,7 +20,7 @@ function roof( w, h, d ) {
         // Back face
         -x, -y, -z,
          0,  y, -z,
-         x, -y, z,
+         x, -y, -z,
 
         // Right face
          x, -y, z,

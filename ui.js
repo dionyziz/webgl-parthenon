@@ -13,21 +13,26 @@ function onresize() {
 $( window ).resize( onresize );
 onresize();
 
-var xyz = [ 0, 0, 0 ];
+var playerLocation = [ 0, 5.0, 64.0 ];
+var playerRotation = 0;
+var deltaPlayer = {
+    distance: 0,
+    angle: 0
+};
 
 document.onkeydown = function( e ) {
     switch ( e.keyCode ) {
         case 37: // left
-            xyz[ 0 ] = 1;
+            deltaPlayer.angle = -5;
             break;
         case 39: // right
-            xyz[ 0 ] = -1;
+            deltaPlayer.angle = 5;
             break;
         case 40: // down
-            xyz[ 2 ] = -1;
+            deltaPlayer.distance = -50;
             break;
         case 38: // up
-            xyz[ 2 ] = 1;
+            deltaPlayer.distance = 50;
             break;
     }
 };
@@ -35,16 +40,16 @@ document.onkeydown = function( e ) {
 document.onkeyup = function( e ) {
     switch ( e.keyCode ) {
         case 37: // left
-            xyz[ 0 ] = 0;
+            deltaPlayer.angle = 0;
             break;
         case 39: // right
-            xyz[ 0 ] = 0;
+            deltaPlayer.angle = 0;
             break;
         case 40: // down
-            xyz[ 2 ] = 0;
+            deltaPlayer.distance = 0;
             break;
         case 38: // up
-            xyz[ 2 ] = 0;
+            deltaPlayer.distance = 0;
             break;
     }
 }

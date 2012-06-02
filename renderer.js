@@ -25,9 +25,6 @@ var Renderer = {
         this.resize( gl, W, H );
         this.vMatrix = mat4.create();
 
-        mat4.identity( this.vMatrix );
-        mat4.translate( this.vMatrix, [ 0.0, -5.0, -64.0 ] );
-
         setInterval( function() {
             document.title = self.fps + ' fps';
             self.fps = 0;
@@ -37,16 +34,24 @@ var Renderer = {
         this.ready = true;
         this.render( gl );
     },
+    integrate: function( dt ) {
+        playerRotation += deltaPlayer.angle * dt;
+        playerLocation[ 0 ] += dt * deltaPlayer.distance * Math.sin( playerRotation );
+        playerLocation[ 2 ] -= dt * deltaPlayer.distance * Math.cos( playerRotation );
+        mat4.identity( this.vMatrix );
+        mat4.rotateY( this.vMatrix, playerRotation );
+        mat4.translate( this.vMatrix, [ -playerLocation[ 0 ], -playerLocation[ 1 ], -playerLocation[ 2 ] ] );
+    },
     render: function() {
         var self = this;
         var gl = this.gl;
+
+        this.integrate( 0.01 );
 
         ++this.fps;
         gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
 
         gl.uniformMatrix4fv( gl.shaderProgram.pMatrixUniform, false, this.pMatrix );
-
-        mat4.translate( this.vMatrix, vec3.create( xyz ) );
 
         for ( var i = 0; i < this.world.length; ++i ) {
             var item = this.world[ i ];
