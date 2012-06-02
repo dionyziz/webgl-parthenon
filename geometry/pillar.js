@@ -3,67 +3,65 @@
 	br = base radius
 	cr = center radius
 	s = number of horizontal slices
-	
-	works only with even number of horizontal slices ( s ).
 */
 
 function pillar( n, h, br, cr, s ) {
-    var theta, vertices = [], indices = [], normals = [];
+    var vertices = [], indices = [], normals = [];
     var step = 2 * Math.PI / n;
     var index = 0;
-    var r, i, r_step = ( cr - br ) / ( s / 2 );
+    var rStep = ( cr - br ) / ( s / 2 );
+    var rUp = br, rDown = br;
+    var heightUp = h / 2;
+    var heightDown = heightUp;
 
-    r_up = br;
-    r_down = br;
-    for ( i = 0; i < s / 2; ++i ) {
-        r_up = r_down;
-        r_down += r_step;
-            
-        for ( theta = 0; theta < 2 * Math.PI; theta += 2 * Math.PI / n ) {
-            var a = [ r_up * Math.cos( theta ), h / 2, r_up * Math.sin( theta ) ];
-            var b = [ r_down * Math.cos( theta ), 0, r_down * Math.sin( theta ) ];
-            var c = [ r_down * Math.cos( theta + step ), 0, r_down * Math.sin( theta + step ) ];
-            var d = [ r_up * Math.cos( theta + step ), h / 2, r_up * Math.sin( theta + step ) ];
-            vertices.push.apply( vertices, a );
-            vertices.push.apply( vertices, b );
-            vertices.push.apply( vertices, c );
-            vertices.push.apply( vertices, d );
-            var n1 = [ a[ 0 ] / r_up, 0, a[ 2 ] / r_up ];
-            var n2 = [ c[ 0 ] / r_down, 0, c[ 2 ] / r_down ];
-            var n3 = [ c[ 0 ] / r_down, 0, c[ 2 ] / r_down ];
-            var n3 = [ c[ 0 ] / r_up, 0, c[ 2 ] / r_up ];
-            normals.push.apply( normals, n1 );
-            normals.push.apply( normals, n1 );
-            normals.push.apply( normals, n2 );
-            normals.push.apply( normals, n2 );
-            indices.push( index, index + 3, index + 1, index + 2, index + 1, index + 3 );
-            index += 4;
-        }
+    function f( i ) {
+        return br + ( cr - br ) * Math.sin( Math.PI * i / s );
+    }
+    function findNormal( p, i, theta ) {
+        var x = 1;
+        var z = 0;
+        var y = 0;
+        // derivative of f
+        var slope = Math.PI * ( i / s ) * ( cr - br ) * Math.cos( Math.PI * i / s );
+        var normal;
+
+        x = 1;
+        y = -x * slope;
+
+        var d = Math.sqrt( x * x + y * y + z * z );
+        x /= d;
+        y /= d;
+        z /= d;
+
+        var xp = x * Math.cos( theta ) - z * Math.sin( theta );
+        var zp = x * Math.sin( theta ) + z * Math.cos( theta );
+
+        return [ xp, y, zp ];
     }
 
-    r_up = cr;
-    r_down = cr;
-    for ( i = s / 2; i <= s; ++i ) {
-        r_up = r_down;
-        r_down -= r_step;
-
-        for ( theta = 0; theta < 2 * Math.PI; theta += 2 * Math.PI / n ) {
-            var a = [ r_up * Math.cos( theta ), 0, r_up * Math.sin( theta ) ];
-            var b = [ r_down * Math.cos( theta ), -h / 2, r_down * Math.sin( theta ) ];
-            var c = [ r_down * Math.cos( theta + step ), -h / 2, r_down * Math.sin( theta + step ) ];
-            var d = [ r_up * Math.cos( theta + step ), 0, r_up * Math.sin( theta + step ) ];
+    for ( var i = 0; i < s; ++i ) {
+        rUp = f( i );
+        rDown = f( i + 1 );
+        heightUp = heightDown;
+        heightDown = heightUp - ( h / 2 ) / ( s / 2 );
+            
+        for ( var theta = 0; theta < 2 * Math.PI; theta += 2 * Math.PI / n ) {
+            var a = [ rUp * Math.cos( theta ), heightUp, rUp * Math.sin( theta ) ],
+                b = [ rDown * Math.cos( theta ), heightDown, rDown * Math.sin( theta ) ],
+                c = [ rDown * Math.cos( theta + step ), heightDown, rDown * Math.sin( theta + step ) ],
+                d = [ rUp * Math.cos( theta + step ), heightUp, rUp * Math.sin( theta + step ) ];
             vertices.push.apply( vertices, a );
             vertices.push.apply( vertices, b );
             vertices.push.apply( vertices, c );
             vertices.push.apply( vertices, d );
-            var n1 = [ a[ 0 ] / r_up, 0, a[ 2 ] / r_up ];
-            var n2 = [ c[ 0 ] / r_down, 0, c[ 2 ] / r_down ];
-            var n3 = [ c[ 0 ] / r_down, 0, c[ 2 ] / r_down ];
-            var n3 = [ c[ 0 ] / r_up, 0, c[ 2 ] / r_up ];
-            normals.push.apply( normals, n1 );
+            var n1 = findNormal( a, i, theta ),
+                n2 = findNormal( b, i + 1, theta ),
+                n3 = findNormal( c, i + 1, theta + step ),
+                n4 = findNormal( d, i, theta + step );
             normals.push.apply( normals, n1 );
             normals.push.apply( normals, n2 );
-            normals.push.apply( normals, n2 );
+            normals.push.apply( normals, n3 );
+            normals.push.apply( normals, n4 );
             indices.push( index, index + 3, index + 1, index + 2, index + 1, index + 3 );
             index += 4;
         }

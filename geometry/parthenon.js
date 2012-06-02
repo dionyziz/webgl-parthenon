@@ -6,7 +6,7 @@ var Parthenon = {
     COLUMNS_FRONT: 8,
     COLUMNS_SIDE: 15,
     COLUMN_RADIUS: 1,
-    COLUMN_BASE_RADIUS: 0.1,
+    COLUMN_BASE_RADIUS: 0.7,
     COLUMN_SPACING: 3,
     COLUMN_HEIGHT: 10.45,
     COLUMN_SUBDIVISION: 10,
@@ -70,7 +70,7 @@ var Parthenon = {
         this.templeWidth = ( this.COLUMNS_FRONT - 1 ) * this.columnDistance;
         this.templeDepth = ( this.COLUMNS_SIDE - 1 ) * this.columnDistance;
         this.createOuterColumns();
-        // this.createFloor();
-        // this.createRoof();
+        this.createFloor();
+        this.createRoof();
     }
 };
