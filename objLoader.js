@@ -86,4 +86,4 @@ var objLoader = {
             textures: real_textures
         };
     }
-}
+};
