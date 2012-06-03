@@ -1,0 +1,15 @@
+texttexttexttext
+v 0 1 0
+v 1 0 0
+v 0 0 0
+
+text text text
+vn 0 0 1
+vn 0 0 1
+vn 0 0 1
+
+f 0/2/0 1/1/1 2/0/2
+
+vt 0 0
+vt 50 0
+vt 0 50
