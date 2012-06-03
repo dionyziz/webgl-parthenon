@@ -10,6 +10,7 @@ attribute vec3 aVertexPosition;
 attribute vec3 aVertexNormal;
 
 uniform mat4 uMVMatrix;
+uniform mat4 uVMatrix;
 uniform mat4 uPMatrix;
 
 varying vec3 vNormalVector;

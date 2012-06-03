@@ -6,21 +6,13 @@ function Material( url, gl, onload ) {
     var self = this;
 
     this.gl = gl;
-    this.url = url;
 
     this.fragmentShader = gl.createShader( gl.FRAGMENT_SHADER );
     this.vertexShader = gl.createShader( gl.VERTEX_SHADER );
 
     this.onload = onload;
 
-    wget( 'shaders/' + url + '/fragment.c', function ( src ) {
-        var fragmentShaderSrc = src;
-        wget( 'shaders/' + url + '/vertex.c', function ( src ) {
-            var vertexShaderSrc = src;
-            self.initShaders( vertexShaderSrc, fragmentShaderSrc );
-            self.onload();
-        } );
-    } );
+    this.download( url );
 }
 
 Material.prototype = {
@@ -30,8 +22,29 @@ Material.prototype = {
     vertexShader: null,
     fragmentShader: null,
     gl: null,
+    downloadData: function( callback ) {
+        // overwrite me
+        callback();
+    },
+    download: function( url ) {
+        var self = this;
+
+        this.downloadData( function() {
+            wget( 'materials/' + url + '/fragment.c', function ( src ) {
+                var fragmentShaderSrc = src;
+                wget( 'materials/' + url + '/vertex.c', function ( src ) {
+                    var vertexShaderSrc = src;
+                    self.initShaders( vertexShaderSrc, fragmentShaderSrc );
+                    self.onload();
+                } );
+            } );
+        } );
+    },
     use: function() {
         this.gl.useProgram( this.shader );
+    },
+    populateUniformLocations: function() {
+        // overwrite me
     },
     initShaders: function( vertexShaderSrc, fragmentShaderSrc ) {
         var gl = this.gl;
@@ -67,5 +80,31 @@ Material.prototype = {
 
         this.shader.pMatrixUniform = gl.getUniformLocation( this.shader, 'uPMatrix' );
         this.shader.mvMatrixUniform = gl.getUniformLocation( this.shader, 'uMVMatrix' );
+        this.shader.vMatrixUniform = gl.getUniformLocation( this.shader, 'uVMatrix' );
+
+        this.populateUniformLocations();
+    },
+    populateUniforms: function() {
+        // overwrite me
+    },
+    drawBegin: function( pMatrix, vMatrix, mvMatrix, bufferSet ) {
+        var gl = this.gl;
+
+        this.use();
+
+        gl.uniformMatrix4fv( this.shader.mvMatrixUniform, false, mvMatrix );
+        gl.uniformMatrix4fv( this.shader.vMatrixUniform, false, vMatrix );
+        gl.uniformMatrix4fv( this.shader.pMatrixUniform, false, pMatrix );
+
+        this.populateUniforms( bufferSet );
+
+        gl.bindBuffer( gl.ARRAY_BUFFER, bufferSet.positionBuffer );
+        gl.vertexAttribPointer( this.shader.vertexPositionAttribute, bufferSet.positionBuffer.itemSize, gl.FLOAT, false, 0, 0 );
+
+        gl.bindBuffer( gl.ARRAY_BUFFER, bufferSet.normalBuffer );
+        gl.vertexAttribPointer( this.shader.vertexNormalAttribute, bufferSet.normalBuffer.itemSize, gl.FLOAT, false, 0, 0 );
+    },
+    drawEnd: function() {
+        // overwrite me
     }
 };

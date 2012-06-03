@@ -38,6 +38,21 @@ var Renderer = {
         mat4.rotateY( this.vMatrix, playerRotation );
         mat4.translate( this.vMatrix, [ -playerLocation[ 0 ], -playerLocation[ 1 ], -playerLocation[ 2 ] ] );
     },
+    renderItem: function( item ) {
+        var bufferSet = item.bufferSet;
+        var mvMatrix = mat4.create();
+
+        mat4.multiply( this.vMatrix, item.mMatrix, mvMatrix );
+
+        item.material.drawBegin(
+            this.pMatrix, this.vMatrix, mvMatrix, bufferSet
+        );
+
+        gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, bufferSet.indexBuffer );
+        gl.drawElements( gl.TRIANGLES, bufferSet.indexBuffer.numItems, gl.UNSIGNED_SHORT, 0 );
+
+        item.material.drawEnd();
+    },
     render: function() {
         var self = this;
         var gl = this.gl;
@@ -47,27 +62,17 @@ var Renderer = {
         ++this.fps;
         gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
 
+        gl.disable( gl.DEPTH_TEST );
         for ( var i = 0; i < this.world.length; ++i ) {
-            var item = this.world[ i ];
-            var bufferSet = item.bufferSet;
-            var mvMatrix = mat4.create();
-
-            item.material.use();
-
-            gl.uniformMatrix4fv( item.material.shader.pMatrixUniform, false, this.pMatrix );
-
-            gl.bindBuffer( gl.ARRAY_BUFFER, bufferSet.positionBuffer );
-            gl.vertexAttribPointer( item.material.shader.vertexPositionAttribute, bufferSet.positionBuffer.itemSize, gl.FLOAT, false, 0, 0 );
-
-            gl.bindBuffer( gl.ARRAY_BUFFER, bufferSet.normalBuffer );
-            gl.vertexAttribPointer( item.material.shader.vertexNormalAttribute, bufferSet.normalBuffer.itemSize, gl.FLOAT, false, 0, 0 );
-
-            gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, bufferSet.indexBuffer );
-
-            mat4.multiply( this.vMatrix, item.mMatrix, mvMatrix );
-
-            gl.uniformMatrix4fv( item.material.shader.mvMatrixUniform, false, mvMatrix );
-            gl.drawElements( gl.TRIANGLES, bufferSet.indexBuffer.numItems, gl.UNSIGNED_SHORT, 0 );
+            if ( !this.world[ i ].zBuffer ) {
+                this.renderItem( this.world[ i ] );
+            }
+        }
+        gl.enable( gl.DEPTH_TEST );
+        for ( var i = 0; i < this.world.length; ++i ) {
+            if ( this.world[ i ].zBuffer ) {
+                this.renderItem( this.world[ i ] );
+            }
         }
 
         window.webkitRequestAnimationFrame( this.render.bind( this ) );
