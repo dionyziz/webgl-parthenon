@@ -36,8 +36,8 @@ var Parthenon = {
         );
 
         for ( var x = -this.templeWidth / 2; x <= this.templeWidth / 2; x += this.columnDistance ) {
-            var col = new Item( this.gl, colBuffer );
-            var col2 = new Item( this.gl, colBuffer );
+            var col = new Item( this.gl, colBuffer, paper );
+            var col2 = new Item( this.gl, colBuffer, paper );
 
             col.move( x, this.COLUMN_HEIGHT / 2, -this.templeDepth / 2 );
             col2.move( x, this.COLUMN_HEIGHT / 2, this.templeDepth / 2 );
@@ -45,8 +45,8 @@ var Parthenon = {
             this.world.push( col2 );
         }
         for ( var z = -this.templeDepth / 2 + this.columnDistance; z < this.templeDepth / 2; z += this.columnDistance ) {
-            var col = new Item( this.gl, colBuffer );
-            var col2 = new Item( this.gl, colBuffer );
+            var col = new Item( this.gl, colBuffer, paper );
+            var col2 = new Item( this.gl, colBuffer, paper );
             col.move( -this.templeWidth / 2, this.COLUMN_HEIGHT / 2, z );
             col2.move( this.templeWidth / 2, this.COLUMN_HEIGHT / 2, z );
             this.world.push( col );
@@ -59,7 +59,7 @@ var Parthenon = {
                 h = this.STEP_HEIGHT,
                 d = this.templeDepth + 2 * this.COLUMN_RADIUS + 2 * ( step + 1 ) * this.STEP_WIDTH;
             
-            var floor = new Item( this.gl, cube( w, h, d ) );
+            var floor = new Item( this.gl, cube( w, h, d ), paper );
             floor.move( 0, -step * this.STEP_HEIGHT, 0 );
             this.world.push( floor );
         }
@@ -70,15 +70,15 @@ var Parthenon = {
                 h = this.STEP_HEIGHT,
                 d = this.templeInnerDepth + 2 * this.COLUMN_RADIUS - 2 * ( step + 1 ) * this.STEP_WIDTH;
             
-            var floor = new Item( this.gl, cube( w, h, d ) );
+            var floor = new Item( this.gl, cube( w, h, d ), paper );
             floor.move( 0, ( step + 1 ) * this.STEP_HEIGHT, 0 );
             this.world.push( floor );
         }
     },
     createRoof: function() {
-        var ceil = new Item( this.gl, cube( this.templeWidth + 2 * this.COLUMN_RADIUS, 0.4, this.templeDepth + 2 * this.COLUMN_RADIUS ) );
-        var ceil2 = new Item( this.gl, cube( this.templeWidth + 2 * this.COLUMN_RADIUS, 0.4, this.templeDepth + 2 * this.COLUMN_RADIUS ) );
-        var ceil3 = new Item( this.gl, roof( this.templeWidth + 2 * this.COLUMN_RADIUS, this.ROOF_HEIGHT, this.templeDepth ) );
+        var ceil = new Item( this.gl, cube( this.templeWidth + 2 * this.COLUMN_RADIUS, 0.4, this.templeDepth + 2 * this.COLUMN_RADIUS ), paper );
+        var ceil2 = new Item( this.gl, cube( this.templeWidth + 2 * this.COLUMN_RADIUS, 0.4, this.templeDepth + 2 * this.COLUMN_RADIUS ), paper );
+        var ceil3 = new Item( this.gl, roof( this.templeWidth + 2 * this.COLUMN_RADIUS, this.ROOF_HEIGHT, this.templeDepth ), paper );
 
         ceil.move( 0, this.COLUMN_HEIGHT, 0 );
         ceil2.move( 0, this.COLUMN_HEIGHT + 0.5, 0 );

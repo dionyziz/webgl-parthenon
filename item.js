@@ -25,7 +25,7 @@ function bufferSet( gl, geometry ) {
     gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint16Array( this.indices ), gl.STATIC_DRAW );
 }
 
-function Item( gl, geometry ) {
+function Item( gl, geometry, material ) {
     this.mMatrix = mat4.create();
     if ( !( geometry instanceof bufferSet ) ) {
         this.bufferSet = new bufferSet( gl, geometry );
@@ -35,10 +35,13 @@ function Item( gl, geometry ) {
     }
 
     mat4.identity( this.mMatrix );
+
+    this.material = material;
 }
 
 Item.prototype = {
     constructor: 'Item',
+    material: null,
     move: function( x, y, z ) {
         mat4.translate( this.mMatrix, vec3.create( [ x, y, z ] ) );
     },
