@@ -6,22 +6,22 @@ function bufferSet( gl, geometry ) {
     this.vertices = geometry.vertices;
     this.indices = geometry.indices;
     this.normals = geometry.normals;
-    // if ( geometry.uvcoords ) {
-    //     this.uvcoords = geometry.uvcoords;
-    // }
-    // if ( geometry.uvwcoords ) {
-    //     this.uvwcoords = geometry.uvwcoords;
-    // }
+    if ( geometry.uvcoords ) {
+        this.uvcoords = geometry.uvcoords;
+    }
+    if ( geometry.uvwcoords ) {
+        this.uvwcoords = geometry.uvwcoords;
+    }
 
     this.positionBuffer = gl.createBuffer();
     this.indexBuffer = gl.createBuffer();
     this.normalBuffer = gl.createBuffer();
-    // if ( geometry.uvcoords ) {
-    //     this.uvBuffer = gl.createBuffer();
-    // }
-    // if ( geometry.uvwcoords ) {
-    //     this.uvwBuffer = gl.createBuffer();
-    // }
+    if ( geometry.uvcoords ) {
+        this.uvBuffer = gl.createBuffer();
+    }
+    if ( geometry.uvwcoords ) {
+        this.uvwBuffer = gl.createBuffer();
+    }
 
     gl.bindBuffer( gl.ARRAY_BUFFER, this.positionBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( this.vertices ), gl.STATIC_DRAW );
@@ -33,19 +33,19 @@ function bufferSet( gl, geometry ) {
     this.normalBuffer.itemSize = 3;
     this.normalBuffer.numItems = this.positionBuffer.numItems;
 
-    // if ( geometry.uvcoords ) {
-    //     gl.bindBuffer( gl.ARRAY_BUFFER, this.uvBuffer );
-    //     gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( this.uvcoords ), gl.STATIC_DRAW );
-    //     this.indexBuffer.itemSize = 2;
-    //     this.indexBuffer.numItems = this.positionBuffer.numItems;
-    // }
+    if ( geometry.uvcoords ) {
+        gl.bindBuffer( gl.ARRAY_BUFFER, this.uvBuffer );
+        gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( this.uvcoords ), gl.STATIC_DRAW );
+        this.uvBuffer.itemSize = 2;
+        this.uvBuffer.numItems = this.positionBuffer.numItems;
+    }
 
-    // if ( geometry.uvwcoords ) {
-    //     gl.bindBuffer( gl.ARRAY_BUFFER, this.uvwBuffer );
-    //     gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( this.uvwcoords ), gl.STATIC_DRAW );
-    //     this.indexBuffer.itemSize = 3;
-    //     this.indexBuffer.numItems = this.positionBuffer.numItems;
-    // }
+    if ( geometry.uvwcoords ) {
+        gl.bindBuffer( gl.ARRAY_BUFFER, this.uvwBuffer );
+        gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( this.uvwcoords ), gl.STATIC_DRAW );
+        this.uvwBuffer.itemSize = 3;
+        this.uvwBuffer.numItems = this.positionBuffer.numItems;
+    }
 
     gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer );
     gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint16Array( this.indices ), gl.STATIC_DRAW );

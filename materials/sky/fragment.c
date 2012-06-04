@@ -9,9 +9,9 @@ precision mediump float;
 varying vec3 vNormalVector;
 varying vec3 vPosition;
 
-varying vec2 vTextureCoord;
+varying vec3 vTextureCoord;
 
-uniform sampler2D uSampler;
+uniform samplerCube uSampler;
 
 void main( void ) {
     vec3 S = vec3( 0.5, 1.0, 0.0 );
@@ -21,5 +21,5 @@ void main( void ) {
     vec3 N = normalize( vNormalVector );
     float I = max( dot( N, L ), 0.0 );
 
-    gl_FragColor = vec4( 1.0 ); // texture2D( uSampler, vTextureCoord );
+    gl_FragColor = vec4( textureCube( uSampler, vTextureCoord ).rgb, 1.0 );
 }

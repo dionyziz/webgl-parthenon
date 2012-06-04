@@ -102,10 +102,17 @@ var Parthenon = {
 //            cubeGeometry.indices[ 3 * i + 1 ] = a;
 //        }
 
-        var skybox = new Item( this.gl, cubeGeometry, plastic );
+        var skybox = new Item( this.gl, cubeGeometry, skyMaterial );
         skybox.zBuffer = false;
 
         this.world.push( skybox );
+    },
+    createGround: function() {
+        var cubeGeometry = cube( 1000, 1, 1000 );
+        var ground = new Item( this.gl, cubeGeometry, paper );
+        ground.move( 0, -1, 0 );
+
+        this.world.push( ground );
     },
     create: function( gl, world ) {
         this.gl = gl;
@@ -119,6 +126,7 @@ var Parthenon = {
         this.createOuterFloor();
         this.createInnerFloor();
         this.createRoof();
+        this.createGround();
         // this.createSky();
     }
 };

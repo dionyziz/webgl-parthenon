@@ -70,9 +70,8 @@ Material.prototype = {
             alert( 'Linking shaders failed' );
         }
 
-        gl.useProgram( this.shader );
-
         this.shader.vertexPositionAttribute = gl.getAttribLocation( this.shader, 'aVertexPosition' );
+        // console.log( this.shader.vertexPositionAttribute );;
         gl.enableVertexAttribArray( this.shader.vertexPositionAttribute );
 
         this.shader.vertexNormalAttribute = gl.getAttribLocation( this.shader, 'aVertexNormal' );

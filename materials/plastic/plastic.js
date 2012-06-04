@@ -10,7 +10,7 @@ PlasticMaterial.prototype = {
     },
     populateUniformLocations: function() {
         this.shader.lightSourceUniform = this.gl.getUniformLocation( this.shader, 'uLightSource' );
-        console.log( this.shader.lightSourceUniform );
+        // console.log( this.shader.lightSourceUniform );
     }
 };
 
