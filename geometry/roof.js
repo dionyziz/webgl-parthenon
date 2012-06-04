@@ -34,6 +34,25 @@ function roof( w, h, d ) {
         -x, -y, -z,
          0,  y, -z
     ];
+    var uvcoords = [
+        0, 0,
+        0.5, 1,
+        1, 0,
+
+        0, 0,
+        0.5, 1,
+        1, 0,
+
+        0, 0,
+        0, 1,
+        1, 0,
+        1, 1,
+
+        0, 0,
+        0, 1,
+        1, 0,
+        1, 1
+    ];
     var indices = [
         0, 2, 1,                  // Front face
         3, 4, 5,                  // Back face
@@ -43,6 +62,7 @@ function roof( w, h, d ) {
     return {
         vertices: vertices,
         indices: indices,
+        uvcoords: uvcoords,
         normals: computeNormals( vertices, indices )
     };
 }

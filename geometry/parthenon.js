@@ -89,7 +89,7 @@ var Parthenon = {
                 h = this.STEP_HEIGHT,
                 d = this.templeDepth + 2 * this.COLUMN_RADIUS + 2 * ( step + 1 ) * this.STEP_WIDTH;
             
-            var floor = new Item( this.gl, cube( w, h, d ), materials.plastic );
+            var floor = new Item( this.gl, cube( w, h, d ), materials.marble );
             floor.move( 0, -step * this.STEP_HEIGHT, 0 );
             this.world.push( floor );
         }
@@ -100,22 +100,19 @@ var Parthenon = {
                 h = this.STEP_HEIGHT,
                 d = this.templeInnerDepth + 2 * this.COLUMN_RADIUS + 2 * ( 2 - step ) * this.STEP_WIDTH;
             
-            var floor = new Item( this.gl, cube( w, h, d ), materials.plastic );
+            var floor = new Item( this.gl, cube( w, h, d ), materials.marble );
             floor.move( 0, ( step + 1 ) * this.STEP_HEIGHT, 0 );
             this.world.push( floor );
         }
     },
     createRoof: function() {
-        var ceil = new Item( this.gl, cube( this.templeWidth + 2 * this.COLUMN_RADIUS, 0.4, this.templeDepth + 2 * this.COLUMN_RADIUS ), materials.plastic );
-        var ceil2 = new Item( this.gl, cube( this.templeWidth + 2 * this.COLUMN_RADIUS, 0.4, this.templeDepth + 2 * this.COLUMN_RADIUS ), materials.plastic );
-        var ceil3 = new Item( this.gl, roof( this.templeWidth + 2 * this.COLUMN_RADIUS, this.ROOF_HEIGHT, this.templeDepth ), materials.plastic );
+        var ceil = new Item( this.gl, cube( this.templeWidth + 2 * this.COLUMN_RADIUS, 0.8, this.templeDepth + 2 * this.COLUMN_RADIUS ), materials.marble );
+        var ceil3 = new Item( this.gl, roof( this.templeWidth + 2 * this.COLUMN_RADIUS, this.ROOF_HEIGHT, this.templeDepth ), materials.marble );
 
         ceil.move( 0, this.COLUMN_HEIGHT, 0 );
-        ceil2.move( 0, this.COLUMN_HEIGHT + 0.2, 0 );
         ceil3.move( 0, this.ROOF_HEIGHT / 2 + this.COLUMN_HEIGHT + 0.4, 0 );
 
         this.world.push( ceil );
-        this.world.push( ceil2 );
         this.world.push( ceil3 );
     },
     createRoom: function() {
@@ -127,8 +124,8 @@ var Parthenon = {
                 this.templeInnerDepth - 2 * this.FRONT_CORRIDOR_SIZE
             )
         );
-        var leftWall = new Item( this.gl, sideWall, materials.plastic );
-        var rightWall = new Item( this.gl, sideWall, materials.plastic );
+        var leftWall = new Item( this.gl, sideWall, materials.marble );
+        var rightWall = new Item( this.gl, sideWall, materials.marble );
 
         leftWall.move( -this.templeInnerWidth / 2, this.templeHeight / 2, 0 );
         rightWall.move( this.templeInnerWidth / 2, this.templeHeight / 2, 0 );
@@ -139,7 +136,7 @@ var Parthenon = {
         var middleWall = new Item(
             this.gl,
             cube( this.templeInnerWidth, this.templeHeight, this.WALL_WIDTH ),
-            materials.plastic
+            materials.marble
         );
         middleWall.move(
             0,
@@ -159,7 +156,7 @@ var Parthenon = {
         );
         for ( var x = -1; x <= 1; x += 2 ) {
             for ( var z = -1; z <= 1; z += 2 ) {
-                var door = new Item( this.gl, doorWall, materials.plastic );
+                var door = new Item( this.gl, doorWall, materials.marble );
                 door.move(
                     x * ( this.DOOR_WIDTH + doorWallSize ) / 2,
                     this.templeHeight / 2,
