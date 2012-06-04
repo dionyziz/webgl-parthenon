@@ -16,9 +16,12 @@ var Parthenon = {
     STEP_HEIGHT: 0.4,
     ROOF_HEIGHT: 3,
     OUTER_CORRIDOR_SIZE: 4,
+    FRONT_CORRIDOR_SIZE: 3,
+    WALL_WIDTH: 1,
     columnDistance: 0,
     templeWidth: 0,
     templeDepth: 0,
+    templeHeight: 0,
     templeInnerWidth: 0,
     templeInnerDepth: 0,
     gl: null,
@@ -114,19 +117,30 @@ var Parthenon = {
         this.world.push( ceil2 );
         this.world.push( ceil3 );
     },
+    createRoom: function() {
+        var sideWall = new bufferSet(
+            this.gl,
+            cube(
+                this.WALL_WIDTH,
+                this.templeHeight,
+                this.templeInnerDepth - 2 * this.FRONT_CORRIDOR_SIZE
+            )
+        );
+        var leftWall = new Item( this.gl, sideWall, plastic );
+        var rightWall = new Item( this.gl, sideWall, plastic );
+
+        leftWall.move( -this.templeInnerWidth / 2, this.templeHeight / 2, 0 );
+        rightWall.move( this.templeInnerWidth / 2, this.templeHeight / 2, 0 );
+
+        this.world.push( leftWall );
+        this.world.push( rightWall );
+    },
     createSky: function() {
         var cubeGeometry = sky( 100, 100, 100 );
 
         for ( var i = 0; i < cubeGeometry.normals.length; ++i ) {
             cubeGeometry.normals[ i ] = -cubeGeometry.normals[ i ];
         }
-//        for ( var i = 0; i < cubeGeometry.indices.length / 3; ++i ) {
-//            var a = cubeGeometry.indices[ 3 * i ];
-//            var b = cubeGeometry.indices[ 3 * i + 1 ];
-//
-//            cubeGeometry.indices[ 3 * i ] = b;
-//            cubeGeometry.indices[ 3 * i + 1 ] = a;
-//        }
 
         var skybox = new Item( this.gl, cubeGeometry, skyMaterial );
         skybox.zBuffer = false;
@@ -148,10 +162,12 @@ var Parthenon = {
         this.templeDepth = ( this.COLUMNS_SIDE - 1 ) * this.columnDistance;
         this.templeInnerWidth = this.templeWidth - 2 * this.COLUMN_RADIUS - 2 * this.OUTER_CORRIDOR_SIZE;
         this.templeInnerDepth = this.templeDepth - 2 * this.COLUMN_RADIUS - 2 * this.OUTER_CORRIDOR_SIZE;
+        this.templeHeight = this.COLUMN_HEIGHT;
         this.createOuterColumns();
         this.createInnerColumns();
         this.createOuterFloor();
         this.createInnerFloor();
+        this.createRoom();
         this.createRoof();
         this.createGround();
         // this.createSky();
