@@ -4,7 +4,7 @@
 
 var Parthenon = {
     COLUMNS_FRONT: 8,
-    COLUMNS_SIDE: 15,
+    COLUMNS_SIDE: 17,
     INNER_COLUMNS_FRONT: 6,
     COLUMN_RADIUS: 1,
     COLUMN_TOP_RADIUS: 0.8,
@@ -134,6 +134,14 @@ var Parthenon = {
 
         this.world.push( leftWall );
         this.world.push( rightWall );
+
+        var middleWall = new Item(
+            this.gl,
+            cube( this.templeInnerWidth, this.templeHeight, this.WALL_WIDTH ),
+            plastic
+        );
+        middleWall.move( 0, this.templeHeight / 2, -( this.templeWidth / 2 - ( this.templeWidth / 2 ) / 1.618 ) );
+        this.world.push( middleWall );
     },
     createSky: function() {
         var cubeGeometry = sky( 100, 100, 100 );
