@@ -48,7 +48,9 @@ var Renderer = {
     renderItem: function( item ) {
         mat4.multiply( this.vMatrix, item.mMatrix, this.mvMatrix );
 
-        console.log( 'Drawing with material ' + item.material.constructor ); 
+        // console.log( 'Drawing with material ' + item.material.constructor ); 
+        assert( item.material instanceof Material );
+
         item.material.drawBegin(
             this.pMatrix, this.vMatrix, this.mvMatrix, item.bufferSet
         );
@@ -56,7 +58,7 @@ var Renderer = {
         gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, item.bufferSet.indexBuffer );
         gl.drawElements( gl.TRIANGLES, item.bufferSet.indexBuffer.numItems, gl.UNSIGNED_SHORT, 0 );
 
-        item.material.drawEnd();
+        item.material.drawEnd( item.bufferSet );
     },
     render: function() {
         var self = this;

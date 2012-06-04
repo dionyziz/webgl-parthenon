@@ -54,7 +54,6 @@ Material.prototype = {
         // overwrite me
     },
     initShaders: function( vertexShaderSrc, fragmentShaderSrc ) {
-        // TODO: move enableAttribute calls to drawBegin
         console.log( 'Compiling shaders for material ' + this.constructor );
 
         assert( vertexShaderSrc != '' );
@@ -88,14 +87,7 @@ Material.prototype = {
         }
 
         this.shader.vertexPositionAttribute = gl.getAttribLocation( this.shader, 'aVertexPosition' );
-        if ( this.shader.vertexPositionAttribute >= 0 ) {
-            gl.enableVertexAttribArray( this.shader.vertexPositionAttribute );
-        }
-
         this.shader.vertexNormalAttribute = gl.getAttribLocation( this.shader, 'aVertexNormal' );
-        if ( this.shader.vertexNormalAttribute >= 0 ) {
-            gl.enableVertexAttribArray( this.shader.vertexNormalAttribute );
-        }
 
         this.shader.pMatrixUniform = gl.getUniformLocation( this.shader, 'uPMatrix' );
         this.shader.mvMatrixUniform = gl.getUniformLocation( this.shader, 'uMVMatrix' );
@@ -103,7 +95,10 @@ Material.prototype = {
 
         this.populateUniformLocations();
     },
-    populateUniforms: function() {
+    populateUniforms: function( bufferset ) {
+        // overwrite me
+    },
+    enableAttributes: function( bufferset ) {
         // overwrite me
     },
     drawBegin: function( pMatrix, vMatrix, mvMatrix, bufferSet ) {
@@ -123,6 +118,14 @@ Material.prototype = {
         }
 
         this.populateUniforms( bufferSet );
+        this.enableAttributes( bufferSet );
+
+        if ( this.shader.vertexPositionAttribute >= 0 ) {
+            gl.enableVertexAttribArray( this.shader.vertexPositionAttribute );
+        }
+        if ( this.shader.vertexNormalAttribute >= 0 ) {
+            gl.enableVertexAttribArray( this.shader.vertexNormalAttribute );
+        }
 
         if ( this.shader.vertexPositionAttribute >= 0 ) {
             gl.bindBuffer( gl.ARRAY_BUFFER, bufferSet.positionBuffer );
@@ -134,8 +137,17 @@ Material.prototype = {
             gl.vertexAttribPointer( this.shader.vertexNormalAttribute, bufferSet.normalBuffer.itemSize, gl.FLOAT, false, 0, 0 );
         }
     },
-    drawEnd: function() {
-        // TODO: disable attributes enabled in drawBegin
+    disableAttributes: function( bufferset ) {
         // overwrite me
+    },
+    drawEnd: function( bufferSet ) {
+        if ( this.shader.vertexPositionAttribute >= 0 ) {
+            gl.disableVertexAttribArray( this.shader.vertexPositionAttribute );
+        }
+        if ( this.shader.vertexNormalAttribute >= 0 ) {
+            gl.disableVertexAttribArray( this.shader.vertexNormalAttribute );
+        }
+
+        this.disableAttributes( bufferSet );
     }
 };

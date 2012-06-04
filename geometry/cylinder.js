@@ -14,9 +14,9 @@ function cylinder( n, h, r ) {
         var c = [ r * Math.cos( theta + step ), -h / 2, r * Math.sin( theta + step ) ];
         var d = [ r * Math.cos( theta + step ), h / 2, r * Math.sin( theta + step ) ];
         var auv = [ theta / ( 2 * Math.PI ), 0 ];
-        var buv = [ theta / ( 2 * Math.PI ), 0 ];
+        var buv = [ theta / ( 2 * Math.PI ), 1 ];
         var cuv = [ ( theta + step ) / ( 2 * Math.PI ), 1 ];
-        var duv = [ ( theta + step ) / ( 2 * Math.PI ), 1 ];
+        var duv = [ ( theta + step ) / ( 2 * Math.PI ), 0 ];
 
         vertices.push.apply( vertices, a );
         vertices.push.apply( vertices, b );

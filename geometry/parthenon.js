@@ -30,8 +30,6 @@ var Parthenon = {
     createOuterColumns: function() {
         var colBuffer = new bufferSet(
             this.gl,
-            cylinder( this.COLUMN_SUBDIVISION, this.COLUMN_HEIGHT, this.COLUMN_RADIUS )
-            /*
             pillar(
                 this.COLUMN_SUBDIVISION,
                 this.COLUMN_HEIGHT,
@@ -40,13 +38,12 @@ var Parthenon = {
                 this.COLUMN_RADIUS,
                 this.COLUMN_SUBDIVISION
             )
-            */
         );
 
         for ( var i = 0; i < this.COLUMNS_FRONT; ++i ) {
             var x = ( i / ( this.COLUMNS_FRONT - 1 ) ) * this.templeWidth - this.templeWidth / 2;
-            var col = new Item( this.gl, colBuffer, materials.plastic );
-            var col2 = new Item( this.gl, colBuffer, materials.plastic );
+            var col = new Item( this.gl, colBuffer, materials.marble );
+            var col2 = new Item( this.gl, colBuffer, materials.marble );
 
             col.move( x, this.COLUMN_HEIGHT / 2, -this.templeDepth / 2 );
             col2.move( x, this.COLUMN_HEIGHT / 2, this.templeDepth / 2 );
@@ -54,8 +51,8 @@ var Parthenon = {
             this.world.push( col2 );
         }
         for ( var z = -this.templeDepth / 2 + this.columnDistance; z < this.templeDepth / 2; z += this.columnDistance ) {
-            var col = new Item( this.gl, colBuffer, materials.plastic );
-            var col2 = new Item( this.gl, colBuffer, materials.plastic );
+            var col = new Item( this.gl, colBuffer, materials.marble );
+            var col2 = new Item( this.gl, colBuffer, materials.marble );
             col.move( -this.templeWidth / 2, this.COLUMN_HEIGHT / 2, z );
             col2.move( this.templeWidth / 2, this.COLUMN_HEIGHT / 2, z );
             this.world.push( col );
@@ -77,8 +74,8 @@ var Parthenon = {
 
         for ( var i = 0; i < this.INNER_COLUMNS_FRONT; ++i ) {
             var x = ( i / ( this.INNER_COLUMNS_FRONT - 1 ) ) * this.templeInnerWidth - this.templeInnerWidth / 2;
-            var col = new Item( this.gl, colBuffer, materials.plastic );
-            var col2 = new Item( this.gl, colBuffer, materials.plastic );
+            var col = new Item( this.gl, colBuffer, materials.marble );
+            var col2 = new Item( this.gl, colBuffer, materials.marble );
 
             col.move( x, this.COLUMN_HEIGHT / 2, -this.templeInnerDepth / 2 );
             col2.move( x, this.COLUMN_HEIGHT / 2, this.templeInnerDepth / 2 );

@@ -7,7 +7,7 @@
 */
 
 function pillar( n, h, tr, br, cr, s ) {
-    var vertices = [], indices = [], normals = [];
+    var vertices = [], indices = [], normals = [], uvcoords = [];
     var step = 2 * Math.PI / n;
     var index = 0;
     var rUp = tr, rDown = tr;
@@ -60,6 +60,11 @@ function pillar( n, h, tr, br, cr, s ) {
                 b = [ rDown * Math.cos( theta ), heightDown, rDown * Math.sin( theta ) ],
                 c = [ rDown * Math.cos( theta + step ), heightDown, rDown * Math.sin( theta + step ) ],
                 d = [ rUp * Math.cos( theta + step ), heightUp, rUp * Math.sin( theta + step ) ];
+            var auv = [ theta / ( 2 * Math.PI ), i / s ],
+                buv = [ theta / ( 2 * Math.PI ), ( i + 1 ) / s ],
+                cuv = [ ( theta + step ) / ( 2 * Math.PI ), ( i + 1 ) / s ],
+                duv = [ ( theta + step ) / ( 2 * Math.PI ), i / s ];
+
             vertices.push.apply( vertices, a );
             vertices.push.apply( vertices, b );
             vertices.push.apply( vertices, c );
@@ -72,6 +77,12 @@ function pillar( n, h, tr, br, cr, s ) {
             normals.push.apply( normals, n2 );
             normals.push.apply( normals, n3 );
             normals.push.apply( normals, n4 );
+
+            uvcoords.push.apply( uvcoords, auv );
+            uvcoords.push.apply( uvcoords, buv );
+            uvcoords.push.apply( uvcoords, cuv );
+            uvcoords.push.apply( uvcoords, duv );
+
             indices.push( index, index + 3, index + 1, index + 2, index + 1, index + 3 );
             index += 4;
         }
@@ -80,6 +91,7 @@ function pillar( n, h, tr, br, cr, s ) {
     return {
         vertices: vertices,
         indices: indices,
-        normals: normals
+        normals: normals,
+        uvcoords: uvcoords
     };
 }

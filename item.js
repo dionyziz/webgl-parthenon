@@ -62,6 +62,7 @@ function bufferSet( gl, geometry ) {
 // represents a transformable item with a geometry and a material
 function Item( gl, geometry, material ) {
     assert( gl instanceof WebGLRenderingContext );
+    assert( material instanceof Material );
 
     // model transformation matrix
     // the vertices of the object are transformed

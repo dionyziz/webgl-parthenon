@@ -59,9 +59,13 @@ SkyMaterial.prototype = {
     },
     populateUniformLocations: function() {
         this.shader.samplerUniform = this.gl.getUniformLocation( this.shader, 'uSampler' );
-
         this.shader.textureCoordAttribute = this.gl.getAttribLocation( this.shader, 'aTextureCoord' );
+    },
+    enableAttributes: function() {
         this.gl.enableVertexAttribArray( this.shader.textureCoordAttribute );
+    },
+    disableAttributes: function() {
+        this.gl.disableVertexAttribArray( this.shader.textureCoordAttribute );
     },
     drawEnd: function() {
         // this.gl.activeTexture( null );
