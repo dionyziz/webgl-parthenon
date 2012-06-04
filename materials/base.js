@@ -3,6 +3,10 @@
  */
 
 function Material( url, gl, onload ) {
+    console.log( 'Constructing material ' + this.constructor );
+
+    assert( gl instanceof WebGLRenderingContext );
+
     var self = this;
 
     this.gl = gl;
@@ -27,6 +31,8 @@ Material.prototype = {
         callback();
     },
     download: function( url ) {
+        assert( url != '' );
+
         var self = this;
 
         this.downloadData( function() {
@@ -34,6 +40,7 @@ Material.prototype = {
                 var fragmentShaderSrc = src;
                 wget( 'materials/' + url + '/vertex.c', function ( src ) {
                     var vertexShaderSrc = src;
+                    console.log( 'Shader source downloaded and ready to compile' );
                     self.initShaders( vertexShaderSrc, fragmentShaderSrc );
                     self.onload();
                 } );
@@ -47,35 +54,48 @@ Material.prototype = {
         // overwrite me
     },
     initShaders: function( vertexShaderSrc, fragmentShaderSrc ) {
+        // TODO: move enableAttribute calls to drawBegin
+        console.log( 'Compiling shaders for material ' + this.constructor );
+
+        assert( vertexShaderSrc != '' );
+        assert( fragmentShaderSrc != '' );
+
         var gl = this.gl;
 
         gl.shaderSource( this.fragmentShader, fragmentShaderSrc );
         gl.shaderSource( this.vertexShader, vertexShaderSrc );
         gl.compileShader( this.fragmentShader );
         if ( !gl.getShaderParameter( this.fragmentShader, gl.COMPILE_STATUS ) ) {
-            alert( 'Failed to compile fragment shader: ' + gl.getShaderInfoLog( this.fragmentShader ) );
+            alert( 'Failed to compile fragment shader of material ' + this.constructor + ': \n' + gl.getShaderInfoLog( this.fragmentShader ) );
         }
         gl.compileShader( this.vertexShader );
         if ( !gl.getShaderParameter( this.vertexShader, gl.COMPILE_STATUS ) ) {
-            alert( 'Failed to compile vertex shader: ' + gl.getShaderInfoLog( this.vertexShader ) );
+            alert( 'Failed to compile vertex shader of material ' + this.constructor + ': \n' + gl.getShaderInfoLog( this.vertexShader ) );
         }
 
         this.shader = gl.createProgram();
+
+        assert( this.shader instanceof WebGLProgram );
 
         gl.attachShader( this.shader, this.vertexShader );
         gl.attachShader( this.shader, this.fragmentShader );
         gl.linkProgram( this.shader );
 
+        gl.useProgram( this.shader );
+
         if ( !gl.getProgramParameter( this.shader, gl.LINK_STATUS ) ) {
-            alert( 'Linking shaders failed' );
+            alert( 'Linking shaders of material ' + this.constructor + ' failed' );
         }
 
         this.shader.vertexPositionAttribute = gl.getAttribLocation( this.shader, 'aVertexPosition' );
-        // console.log( this.shader.vertexPositionAttribute );;
-        gl.enableVertexAttribArray( this.shader.vertexPositionAttribute );
+        if ( this.shader.vertexPositionAttribute >= 0 ) {
+            gl.enableVertexAttribArray( this.shader.vertexPositionAttribute );
+        }
 
         this.shader.vertexNormalAttribute = gl.getAttribLocation( this.shader, 'aVertexNormal' );
-        gl.enableVertexAttribArray( this.shader.vertexNormalAttribute );
+        if ( this.shader.vertexNormalAttribute >= 0 ) {
+            gl.enableVertexAttribArray( this.shader.vertexNormalAttribute );
+        }
 
         this.shader.pMatrixUniform = gl.getUniformLocation( this.shader, 'uPMatrix' );
         this.shader.mvMatrixUniform = gl.getUniformLocation( this.shader, 'uMVMatrix' );
@@ -87,23 +107,35 @@ Material.prototype = {
         // overwrite me
     },
     drawBegin: function( pMatrix, vMatrix, mvMatrix, bufferSet ) {
+        assert( this.shader instanceof WebGLProgram, 'Material ' + this.constructor + ' tried to draw without a valid shader.' );
         var gl = this.gl;
 
         this.use();
 
-        gl.uniformMatrix4fv( this.shader.mvMatrixUniform, false, mvMatrix );
-        gl.uniformMatrix4fv( this.shader.vMatrixUniform, false, vMatrix );
-        gl.uniformMatrix4fv( this.shader.pMatrixUniform, false, pMatrix );
+        if ( this.shader.mvMatrixUniform instanceof WebGLUniformLocation ) {
+            gl.uniformMatrix4fv( this.shader.mvMatrixUniform, false, mvMatrix );
+        }
+        if ( this.shader.vMatrixUniform instanceof WebGLUniformLocation ) {
+            gl.uniformMatrix4fv( this.shader.vMatrixUniform, false, vMatrix );
+        }
+        if ( this.shader.pMatrixUniform instanceof WebGLUniformLocation ) {
+            gl.uniformMatrix4fv( this.shader.pMatrixUniform, false, pMatrix );
+        }
 
         this.populateUniforms( bufferSet );
 
-        gl.bindBuffer( gl.ARRAY_BUFFER, bufferSet.positionBuffer );
-        gl.vertexAttribPointer( this.shader.vertexPositionAttribute, bufferSet.positionBuffer.itemSize, gl.FLOAT, false, 0, 0 );
+        if ( this.shader.vertexPositionAttribute >= 0 ) {
+            gl.bindBuffer( gl.ARRAY_BUFFER, bufferSet.positionBuffer );
+            gl.vertexAttribPointer( this.shader.vertexPositionAttribute, bufferSet.positionBuffer.itemSize, gl.FLOAT, false, 0, 0 );
+        }
 
-        gl.bindBuffer( gl.ARRAY_BUFFER, bufferSet.normalBuffer );
-        gl.vertexAttribPointer( this.shader.vertexNormalAttribute, bufferSet.normalBuffer.itemSize, gl.FLOAT, false, 0, 0 );
+        if ( this.shader.vertexNormalAttribute >= 0 ) {
+            gl.bindBuffer( gl.ARRAY_BUFFER, bufferSet.normalBuffer );
+            gl.vertexAttribPointer( this.shader.vertexNormalAttribute, bufferSet.normalBuffer.itemSize, gl.FLOAT, false, 0, 0 );
+        }
     },
     drawEnd: function() {
+        // TODO: disable attributes enabled in drawBegin
         // overwrite me
     }
 };

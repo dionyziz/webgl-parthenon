@@ -2,7 +2,13 @@
  * Developer: Dionysis "dionyziz" Zindros <dionyziz@gmail.com>
  */
 
+// Represents a set of buffers uploaded to GPU memory containing geometrical data
 function bufferSet( gl, geometry ) {
+    assert( gl instanceof WebGLRenderingContext );
+    assert( typeof geometry.vertices != 'undefined' );
+    assert( typeof geometry.indices != 'undefined' );
+    assert( typeof geometry.normals != 'undefined' );
+
     this.vertices = geometry.vertices;
     this.indices = geometry.indices;
     this.normals = geometry.normals;
@@ -53,16 +59,25 @@ function bufferSet( gl, geometry ) {
     this.indexBuffer.numItems = this.indices.length;
 }
 
+// represents a transformable item with a geometry and a material
 function Item( gl, geometry, material ) {
+    assert( gl instanceof WebGLRenderingContext );
+
+    // model transformation matrix
+    // the vertices of the object are transformed
+    // on the GPU at the vertex shader level
     this.mMatrix = mat4.create();
+    mat4.identity( this.mMatrix );
+
     if ( !( geometry instanceof bufferSet ) ) {
         this.bufferSet = new bufferSet( gl, geometry );
     }
     else {
+        // allow using a pre-instantiated bufferSet for optimization reasons
+        // as many items can share the same geometry (but be transformed to,
+        // for example, different locations in the world)
         this.bufferSet = geometry;
     }
-
-    mat4.identity( this.mMatrix );
 
     this.material = material;
 }
@@ -70,7 +85,10 @@ function Item( gl, geometry, material ) {
 Item.prototype = {
     constructor: 'Item',
     material: null,
-    zBuffer: true,
+    // whether zBuffering should be done when drawing this item
+    // if set to false, it will be drawn before everything else with
+    // zBuffering disabled, which is useful for skyboxes
+    zBuffer: true, 
     move: function( x, y, z ) {
         mat4.translate( this.mMatrix, vec3.create( [ x, y, z ] ) );
     },

@@ -1,3 +1,7 @@
+/*
+ * Developer: Dionysis "dionyziz" Zindros <dionyziz@gmail.com>
+ */
+
 function SkyMaterial( gl, onload ) {
     Material.call( this, 'sky', gl, onload );
 }
@@ -37,8 +41,6 @@ SkyMaterial.prototype = {
                     self.gl.texParameteri( self.gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE );
                     self.gl.bindTexture( self.gl.TEXTURE_CUBE_MAP, null );
 
-                    var pixel = new Uint8Array( [ 100, 100, 255, 255  ]);
-                    self.gl.texImage2D( self.gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, pixel );
                     callback();
                 }
             };

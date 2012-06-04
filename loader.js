@@ -4,15 +4,20 @@
 
 var gl = init( document.getElementById( 'canvas' ) );
 var world = [];
-var paper, plastic, skyMaterial;
+var materials = {};
 
-plastic = new PlasticMaterial( gl, function() {
-    paper = new PaperMaterial( gl, function() {
-        Parthenon.create( gl, world );
-        Renderer.init( gl, world );
-        Renderer.begin();
-        skyMaterial = new SkyMaterial( gl, function() {
-            Parthenon.createSky( gl, world );
-        } );
+Parthenon.init( gl, world );
+Renderer.init( gl, world );
+Renderer.begin();
+
+materials.paper = new PaperMaterial( gl, function() {
+    Parthenon.createGround();
+} );
+// materials.marble = new MarbleMaterial( gl, function() {
+    materials.plastic = new PlasticMaterial( gl, function() {
+        Parthenon.create();
     } );
+// } );
+materials.sky = new SkyMaterial( gl, function() {
+    Parthenon.createSky();
 } );

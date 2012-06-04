@@ -1,3 +1,7 @@
+/*
+ * Developer: Dionysis "dionyziz" Zindros <dionyziz@gmail.com>
+ */
+
 function PlasticMaterial( gl, onload ) {
     Material.call( this, 'plastic', gl, onload );
 }

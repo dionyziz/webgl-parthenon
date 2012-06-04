@@ -48,6 +48,7 @@ var Renderer = {
     renderItem: function( item ) {
         mat4.multiply( this.vMatrix, item.mMatrix, this.mvMatrix );
 
+        console.log( 'Drawing with material ' + item.material.constructor ); 
         item.material.drawBegin(
             this.pMatrix, this.vMatrix, this.mvMatrix, item.bufferSet
         );
