@@ -7,8 +7,6 @@ function Material( url, gl, onload ) {
 
     assert( gl instanceof WebGLRenderingContext );
 
-    var self = this;
-
     this.gl = gl;
 
     this.fragmentShader = gl.createShader( gl.FRAGMENT_SHADER );
