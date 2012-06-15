@@ -95,5 +95,8 @@ Item.prototype = {
     },
     rotate: function( angle, axis ) {
         mat4.rotate( this.mMatrix, angle, vec3.create( axis ) );
+    },
+    scale: function( x, y, z ) {
+        mat4.scale( this.mMatrix, vec3.create( [ x, y, z ] ) );
     }
 };
