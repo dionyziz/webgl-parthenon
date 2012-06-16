@@ -28,16 +28,10 @@ var Parthenon = {
     gl: null,
     world: null,
     createOuterColumns: function() {
+        var column = objLoader.loadObj("geometry/obj/column.obj");
         var colBuffer = new bufferSet(
             this.gl,
-            pillar(
-                this.COLUMN_SUBDIVISION,
-                this.COLUMN_HEIGHT,
-                this.COLUMN_TOP_RADIUS,
-                this.COLUMN_BASE_RADIUS,
-                this.COLUMN_RADIUS,
-                this.COLUMN_SUBDIVISION
-            )
+            column
         );
 
         for ( var i = 0; i < this.COLUMNS_FRONT; ++i ) {
@@ -45,31 +39,29 @@ var Parthenon = {
             var col = new Item( this.gl, colBuffer, materials.marble );
             var col2 = new Item( this.gl, colBuffer, materials.marble );
 
-            col.move( x, this.COLUMN_HEIGHT / 2, -this.templeDepth / 2 );
-            col2.move( x, this.COLUMN_HEIGHT / 2, this.templeDepth / 2 );
+            col.move( x, 0, -this.templeDepth / 2 );
+            col.scale( 1, 1.105, 1 );
+            col2.move( x, 0, this.templeDepth / 2 );
+            col2.scale( 1, 1.105, 1 );
             this.world.push( col );
             this.world.push( col2 );
         }
         for ( var z = -this.templeDepth / 2 + this.columnDistance; z < this.templeDepth / 2; z += this.columnDistance ) {
             var col = new Item( this.gl, colBuffer, materials.marble );
             var col2 = new Item( this.gl, colBuffer, materials.marble );
-            col.move( -this.templeWidth / 2, this.COLUMN_HEIGHT / 2, z );
-            col2.move( this.templeWidth / 2, this.COLUMN_HEIGHT / 2, z );
+            col.move( -this.templeWidth / 2, 0, z );
+            col.scale( 1, 1.105, 1 );
+            col2.move( this.templeWidth / 2, 0, z );
+            col2.scale( 1, 1.105, 1 );
             this.world.push( col );
             this.world.push( col2 );
         }
     },
     createInnerColumns: function() {
+        var column = objLoader.loadObj("geometry/obj/column.obj");
         var colBuffer = new bufferSet(
             this.gl,
-            pillar(
-                this.COLUMN_SUBDIVISION,
-                this.COLUMN_HEIGHT,
-                this.COLUMN_TOP_RADIUS,
-                this.COLUMN_BASE_RADIUS,
-                this.COLUMN_RADIUS,
-                this.COLUMN_SUBDIVISION
-            )
+            column
         );
 
         for ( var i = 0; i < this.INNER_COLUMNS_FRONT; ++i ) {
@@ -77,8 +69,10 @@ var Parthenon = {
             var col = new Item( this.gl, colBuffer, materials.marble );
             var col2 = new Item( this.gl, colBuffer, materials.marble );
 
-            col.move( x, this.COLUMN_HEIGHT / 2, -this.templeInnerDepth / 2 );
-            col2.move( x, this.COLUMN_HEIGHT / 2, this.templeInnerDepth / 2 );
+            col.move( x, 2 * this.STEP_HEIGHT, -this.templeInnerDepth / 2 );
+            col.scale( 1, 1.015, 1 );
+            col2.move( x, 2 * this.STEP_HEIGHT, this.templeInnerDepth / 2 );
+            col2.scale( 1, 1.015, 1 );
             this.world.push( col );
             this.world.push( col2 );
         }

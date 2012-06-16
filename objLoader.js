@@ -7,10 +7,10 @@ var objLoader = {
             if ( request.readyState != 4 ) {
                 return;
             }
-            return objLoader.handleLoadedObject( request.responseText );
+            return this.handleLoadedObject( request.responseText );
         }*/
         request.send();
-        return objLoader.handleLoadedObject( request.responseText );
+        return this.handleLoadedObject( request.responseText );
     },
 
     handleLoadedObject: function( data ) {
@@ -23,13 +23,13 @@ var objLoader = {
             temp = data[ i ].split( " " );
             switch( temp[ 0 ] ) {
                 case "v":
-                    vertices = pushData( vertices, temp, false );
+                    vertices = this.pushData( vertices, temp, false );
                     break;
                 case "vt":
-                    textures = pushData( textures, temp, false );
+                    textures = this.pushData( textures, temp, false );
                     break;
                 case "vn":
-                    normals = pushData( normals, temp, false );
+                    normals = this.pushData( normals, temp, false );
                     break;
                 case "f":
                     for ( var j = 1; j< temp.length; j++) {
@@ -38,25 +38,25 @@ var objLoader = {
                     }
                     temp = temp.join(" ");
                     temp = temp.split(" ");
-                    faces = pushData( faces, temp, true );
+                    faces = this.pushData( faces, temp, true );
                     break;
                 default:
                     break;
             }
         }
 
-        result = objLoader.computeArraysFromFaces( vertices, textures, normals, faces );
+        result = this.computeArraysFromFaces( vertices, textures, normals, faces );
 
         console.log('Object loaded successfully');
         return {
             vertices: result.vertices,
             indices: result.indices,
             normals: result.normals,
-            textures: result.textures
+            uvcoords: result.textures
         };
     },
 
-    pushData: function( array, data ) {
+    pushData: function( array, data, faces ) {
         var array = array;
         if ( !faces ) {
             for ( var i = 1; i< data.length; i++ ) {
