@@ -10,12 +10,14 @@ Parthenon.init( gl, world );
 Renderer.init( gl, world );
 Renderer.begin();
 
-materials.paper = new PaperMaterial( gl, function() {
+materials.grass = new GrassMaterial( gl, function() {
     Parthenon.createGround();
 } );
-materials.marble = new MarbleMaterial( gl, function() {
-    materials.plastic = new PlasticMaterial( gl, function() {
-        Parthenon.create();
+materials.pediment = new PedimentMaterial( gl, function() {
+    materials.marble = new MarbleMaterial( gl, function() {
+        materials.plastic = new PlasticMaterial( gl, function() {
+            Parthenon.create();
+        } );
     } );
 } );
 materials.sky = new SkyMaterial( gl, function() {
