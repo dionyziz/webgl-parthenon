@@ -101,7 +101,7 @@ var Parthenon = {
     },
     createRoof: function() {
         var ceil = new Item( this.gl, cube( this.templeWidth + 2 * this.COLUMN_RADIUS, 0.8, this.templeDepth + 2 * this.COLUMN_RADIUS ), materials.marble );
-        var ceil3 = new Item( this.gl, roof( this.templeWidth + 2 * this.COLUMN_RADIUS, this.ROOF_HEIGHT, this.templeDepth ), materials.marble );
+        var ceil3 = new Item( this.gl, roof( this.templeWidth + 2 * this.COLUMN_RADIUS, this.ROOF_HEIGHT, this.templeDepth ), materials.pediment );
 
         ceil.move( 0, this.COLUMN_HEIGHT, 0 );
         ceil3.move( 0, this.ROOF_HEIGHT / 2 + this.COLUMN_HEIGHT + 0.4, 0 );
@@ -174,7 +174,7 @@ var Parthenon = {
     },
     createGround: function() {
         var cubeGeometry = cube( 1000, 1, 1000 );
-        var ground = new Item( this.gl, cubeGeometry, materials.paper );
+        var ground = new Item( this.gl, cubeGeometry, materials.grass );
 
         ground.move( 0, -1, 0 );
 
