@@ -21,8 +21,8 @@ void main( void ) {
     vec3 V = normalize( vec3( 0.0 ) - P ); // vector from the point to the viewer
     vec3 L = normalize( S - P ); // vector from the point to the light source
     // vec3 diffuseMaterial = vec3( 0.66, 0.68, 0.63 );
-    vec3 specularMaterial = vec3( 0.1 );
-    vec3 ambientMaterial = vec3( 0.66, 0.68, 0.63 );
+    vec3 specularMaterial = vec3( 0.2 );
+    // vec3 ambientMaterial = vec3( 0.66, 0.68, 0.63 );
     vec3 N = normalize( vNormalVector );
     vec3 R = -L + 2.0 * dot( L, N ) * N; // vector of reflected light
     float diffuseIntensity = max( dot( N, L ), 0.0 );
@@ -30,6 +30,7 @@ void main( void ) {
     float ambientIntensity = 0.1;
 
     vec3 diffuseMaterial = texture2D( uSampler, vec2( vTextureCoord.s, vTextureCoord.t ) ).rgb;
+    vec3 ambientMaterial = diffuseMaterial;
 
     gl_FragColor = vec4(
           ambientIntensity * ambientMaterial

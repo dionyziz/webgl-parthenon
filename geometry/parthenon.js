@@ -173,12 +173,22 @@ var Parthenon = {
         this.world.push( skybox );
     },
     createGround: function() {
-        var cubeGeometry = cube( 1000, 1, 1000 );
-        var ground = new Item( this.gl, cubeGeometry, materials.grass );
+        var X_STEP = 50, Z_STEP = 50;
 
-        ground.move( 0, -1, 0 );
-
-        this.world.push( ground );
+        var groundGeometryBuffer = new bufferSet(
+            this.gl,
+            cube( X_STEP, 1, Z_STEP )
+        );
+        // TODO: merging the element array buffers may yield to optimizations at this point
+        //       profile and correct accordingly
+        //
+        for ( var x = -100; x <= 100; x += X_STEP ) {
+            for ( var z = -100; z <= 100; z += Z_STEP ) {
+                var ground = new Item( this.gl, groundGeometryBuffer, materials.grass );
+                ground.move( x, -1, z );
+                this.world.push( ground );
+            }
+        }
     },
     create: function() {
         this.createOuterColumns();

@@ -13,7 +13,7 @@ function onresize() {
 $( window ).resize( onresize );
 onresize();
 
-var playerLocation = [ 0, 8.0, 70.0 ];
+var playerLocation = [ 0, 5.0, 70.0 ];
 var playerRotation = 0;
 var deltaPlayer = {
     distance: 0,
