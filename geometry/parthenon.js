@@ -28,7 +28,7 @@ var Parthenon = {
     gl: null,
     world: null,
     createOuterColumns: function() {
-        var column = objLoader.loadObj("geometry/obj/column.obj");
+        var column = objLoader.loadObj( 'geometry/obj/column.obj' );
         var colBuffer = new bufferSet(
             this.gl,
             column
@@ -36,8 +36,8 @@ var Parthenon = {
 
         for ( var i = 0; i < this.COLUMNS_FRONT; ++i ) {
             var x = ( i / ( this.COLUMNS_FRONT - 1 ) ) * this.templeWidth - this.templeWidth / 2;
-            var col = new Item( this.gl, colBuffer, materials.marble );
-            var col2 = new Item( this.gl, colBuffer, materials.marble );
+            var col = new Item( this.gl, colBuffer, materials.column );
+            var col2 = new Item( this.gl, colBuffer, materials.column );
 
             col.move( x, 0, -this.templeDepth / 2 );
             col.scale( 1, 1.105, 1 );
@@ -47,8 +47,8 @@ var Parthenon = {
             this.world.push( col2 );
         }
         for ( var z = -this.templeDepth / 2 + this.columnDistance; z < this.templeDepth / 2; z += this.columnDistance ) {
-            var col = new Item( this.gl, colBuffer, materials.marble );
-            var col2 = new Item( this.gl, colBuffer, materials.marble );
+            var col = new Item( this.gl, colBuffer, materials.column );
+            var col2 = new Item( this.gl, colBuffer, materials.column );
             col.move( -this.templeWidth / 2, 0, z );
             col.scale( 1, 1.105, 1 );
             col2.move( this.templeWidth / 2, 0, z );
@@ -58,7 +58,7 @@ var Parthenon = {
         }
     },
     createInnerColumns: function() {
-        var column = objLoader.loadObj("geometry/obj/column.obj");
+        var column = objLoader.loadObj( 'geometry/obj/column.obj' );
         var colBuffer = new bufferSet(
             this.gl,
             column
@@ -66,8 +66,8 @@ var Parthenon = {
 
         for ( var i = 0; i < this.INNER_COLUMNS_FRONT; ++i ) {
             var x = ( i / ( this.INNER_COLUMNS_FRONT - 1 ) ) * this.templeInnerWidth - this.templeInnerWidth / 2;
-            var col = new Item( this.gl, colBuffer, materials.marble );
-            var col2 = new Item( this.gl, colBuffer, materials.marble );
+            var col = new Item( this.gl, colBuffer, materials.column );
+            var col2 = new Item( this.gl, colBuffer, materials.column );
 
             col.move( x, 2 * this.STEP_HEIGHT, -this.templeInnerDepth / 2 );
             col.scale( 1, 1.015, 1 );

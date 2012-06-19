@@ -14,9 +14,11 @@ materials.grass = new GrassMaterial( gl, function() {
     Parthenon.createGround();
 } );
 materials.pediment = new PedimentMaterial( gl, function() {
-    materials.marble = new MarbleMaterial( gl, function() {
-        materials.plastic = new PlasticMaterial( gl, function() {
-            Parthenon.create();
+    materials.column = new ColumnMaterial( gl, function() {
+        materials.marble = new MarbleMaterial( gl, function() {
+            materials.plastic = new PlasticMaterial( gl, function() {
+                Parthenon.create();
+            } );
         } );
     } );
 } );
