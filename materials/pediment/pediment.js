@@ -60,4 +60,4 @@ PedimentMaterial.prototype = {
     }
 };
 
-PedimentMaterial.extend( Material );
+PedimentMaterial.extends( Material );

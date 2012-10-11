@@ -60,4 +60,4 @@ MarbleMaterial.prototype = {
     }
 };
 
-MarbleMaterial.extend( Material );
+MarbleMaterial.extends( Material );

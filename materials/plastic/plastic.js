@@ -18,4 +18,4 @@ PlasticMaterial.prototype = {
     }
 };
 
-PlasticMaterial.extend( Material );
+PlasticMaterial.extends( Material );

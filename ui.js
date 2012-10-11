@@ -1,5 +1,5 @@
 var W = 600, H = 600;
-var canvas;
+var canvas = document.getElementById( 'canvas' );
 
 function onresize() {
     W = $( window ).width();

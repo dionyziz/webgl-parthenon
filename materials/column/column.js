@@ -60,4 +60,4 @@ ColumnMaterial.prototype = {
     }
 };
 
-ColumnMaterial.extend( Material );
+ColumnMaterial.extends( Material );

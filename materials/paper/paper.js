@@ -10,4 +10,4 @@ PaperMaterial.prototype = {
     constructor: 'PaperMaterial'
 };
 
-PaperMaterial.extend( Material );
+PaperMaterial.extends( Material );

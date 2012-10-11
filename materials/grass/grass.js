@@ -60,4 +60,4 @@ GrassMaterial.prototype = {
     }
 };
 
-GrassMaterial.extend( Material );
+GrassMaterial.extends( Material );

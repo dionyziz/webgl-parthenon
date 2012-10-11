@@ -72,4 +72,4 @@ SkyMaterial.prototype = {
     }
 };
 
-SkyMaterial.extend( Material );
+SkyMaterial.extends( Material );

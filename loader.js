@@ -2,7 +2,7 @@
  * Developer: Dionysis "dionyziz" Zindros <dionyziz@gmail.com>
  */
 
-var gl = init( document.getElementById( 'canvas' ) );
+var gl = init( canvas );
 var world = [];
 var materials = {};
 
