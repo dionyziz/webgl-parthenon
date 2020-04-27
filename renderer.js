@@ -82,9 +82,9 @@ var Renderer = {
             }
         }
 
-        window.webkitRequestAnimationFrame( this.render.bind( this ) );
+        requestAnimationFrame( this.render.bind( this ) );
     },
     begin: function() {
-        window.webkitRequestAnimationFrame( this.render.bind( this ) );
+        requestAnimationFrame( this.render.bind( this ) );
     }
 };
